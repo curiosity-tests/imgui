@@ -37,7 +37,7 @@ permissions:
 env:
   # The one variable that separates the arms: on baseline, action-checkout
   # skips its Set up Chalk step entirely.
-  CHALK_ON: ${{ github.event_name == 'workflow_dispatch' && inputs.leg != 'baseline' }}
+  CHALK_ON: ${{ inputs.leg == 'instrumented' }}
 
 run-name: "build ${{ inputs.leg || 'push' }} ${{ inputs.racecar_run }}"
 
@@ -280,11 +280,11 @@ jobs:
 
     - name: Build example_glfw_opengl3
       run: make -C examples/example_glfw_opengl3
-      if: github.event_name == 'workflow_run'
+      if: ${{ 'push' == 'workflow_run' }}
 
     - name: Build example_sdl2_opengl2
       run: make -C examples/example_sdl2_opengl2
-      if: github.event_name == 'workflow_run'
+      if: ${{ 'push' == 'workflow_run' }}
 
     - name: Build example_sdl2_opengl3
       run: make -C examples/example_sdl2_opengl3
